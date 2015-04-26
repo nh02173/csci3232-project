@@ -14,7 +14,8 @@ const int NUM_ALGOS = 6;
 
 // Coordinates
 struct Coords {
-  int posP = 0, posT = 0, posS = 0;
+  int position;
+  char value;
 };
 
 int main(){
