@@ -12,27 +12,9 @@ const int MIN_TRACKS = 8, MAX_TRACKS = 32;
 const int MIN_SECTORS = 16, MAX_SECTORS = 64;
 const int NUM_ALGOS = 6;
 
-// Coordinates
-struct Coords {
-  int position;
-  char value;
-};
-
 int main(){
     // Define disk parameters
-    int platterSelect = 0, trackSelect = 0, sectorSelect = 0;
-    int platters = 0, tracks = 0, sectors = 0;
-    int algo = 0;
-    
-    // Check all against maximums
-    cout << "Define the number of platters [" << MIN_PLATTERS << "-" << MAX_PLATTERS << "]:" << endl;
-    cin >> platterSelect;
-    if(platterSelect < MAX_PLATTERS && platterSelect >= MIN_PLATTERS){
-        platters = platterSelect;
-    } else {
-        cerr << "Platters was not in the specified range!" << endl;
-        return -1;
-    }
+    int trackSelect = 0, tracks = 0, algo = 0;
     
     cout << "Define the number of tracks per platter [" << MIN_TRACKS << "-" << MAX_TRACKS << "]:" << endl;
     cin >> trackSelect;
@@ -42,16 +24,7 @@ int main(){
         cerr << "Tracks was not in the specified range!" << endl;
         return -1;
     }
-    
-    cout << "Define the number of sectors per track [" << MIN_SECTORS << "-" << MAX_SECTORS << "]:" << endl;
-    cin >> sectorSelect;
-    if(sectorSelect < MAX_SECTORS && sectorSelect <= MIN_SECTORS){
-        sectors = sectorSelect;
-    } else {
-        cerr << "Sectors was not in the specified range!" << endl;
-        return -1;
-    }
-    
+
     // Collecting input data
     string inputString;
 
@@ -80,21 +53,19 @@ int main(){
     cout << "\nInitializing the disk...\n" << endl;
     
     // Setup a lookup table that is the size of the data
-    Coords lookupTable[inputString.length()];
+    int lookupTable[inputString.length()];
     
     // Setup a data structure to simulate virtual hard disk
-    char vhd[platters][tracks][sectors];
+    char vhd[tracks];
     
-    // Create distributions for each level of the structure 
-    uniform_int_distribution<int> distP(MIN_PLATTERS,platters);
+    // Create distribution
     uniform_int_distribution<int> distT(MIN_TRACKS,tracks);
-    uniform_int_distribution<int> distS(MIN_SECTORS,sectors);
-    
+
     // Using the Mersenne Twister for randomization
     mt19937 generator;
     generator.seed(time(NULL));
     
-    int i, genP, genT, genS;
+    int i, genT;
     bool search = false;
     
     // Populate the VHD according to data
@@ -103,18 +74,14 @@ int main(){
         // Loop while spot is occupied
         while(search){
             // Generate positions
-            genP = distP(generator);
             genT = distT(generator);
-            genS = distS(generator);
             // Check the position
-            char checkVal = vhd[genP][genT][genS];
+            char checkVal = vhd[genT];
             // Write the position
             if(!checkVal){
                 search = false;
-                vhd[genP][genT][genS] = inputString[i];
-                lookupTable[i].posP = genP;
-                lookupTable[i].posT = genT;
-                lookupTable[i].posS = genS;
+                vhd[genT] = inputString[i];
+                lookupTable[i] = genT;
             }
         }
     }
