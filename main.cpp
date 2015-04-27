@@ -128,7 +128,7 @@ int main(){
             }
             break;
         case 3: // SCAN
-            startPos = foundPos;
+            foundPos = startPos;
             for(i = 0; i < inputString.length(); i++){
                 if(dirSelect == 1){
                     if((foundPos + 1) > trackSelect){
@@ -160,7 +160,7 @@ int main(){
             }
             break;
         case 4: // C-SCAN
-            startPos = foundPos;
+            foundPos = startPos;
             for(i = 0; i < inputString.length(); i++){
                 if(dirSelect == 1){
                     if((foundPos + 1) > trackSelect){
@@ -192,7 +192,7 @@ int main(){
             }
             break;
         case 5: // C-LOOK
-            startPos = foundPos;
+            foundPos = startPos;
             for(i = 0; i < inputString.length(); i++){
                 if(dirSelect == 1){
                     if((foundPos + 1) > trackSelect){
@@ -234,7 +234,7 @@ int main(){
     }
     
     // Report results
-    cout << "\nMoved a total of " << moveCount << " positions with the given algorithm " << endl;
+    cout << "\nMoved a total of " << seekTime << " positions with the given algorithm " << endl;
     
     return 0;
 }
